@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test App</title>
+
+    <script src="js/libs/angular.min.js"></script>
+</head>
+<body ng-app="clockApp">
+<div ng-controller="weatherController">
+ {{ weather.temperature.now | weatherFilter }}
+</div>
+
+<!-- Modules -->
+<script src="js/app.js"></script>
+
+<!-- Controllers -->
+<script src="js/controllers/weatherController.js"></script>
+
+<!-- Services -->
+<script src="js/services/weather.js"></script>
+</body>
+</html>
