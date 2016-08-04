@@ -2,22 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>test App</title>
 
     <script src="js/libs/angular.min.js"></script>
 </head>
 <body ng-app="clockApp">
-<div ng-controller="weatherController">
+<div ng-controller="meteorologyController">
  {{ weather.temperature.now | weatherFilter }}
+
+ {{ forecast.temp.min }}
 </div>
 
 <!-- Modules -->
 <script src="js/app.js"></script>
 
 <!-- Controllers -->
-<script src="js/controllers/weatherController.js"></script>
+<script src="js/controllers/meteorologyController.js"></script>
 
 <!-- Services -->
-<script src="js/services/weather.js"></script>
+<script src="js/services/weatherService.js"></script>
+<script src="js/services/forecastService.js"></script>
 </body>
 </html>

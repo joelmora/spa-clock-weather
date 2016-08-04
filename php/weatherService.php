@@ -1,0 +1,11 @@
+<?php
+
+require_once 'WeatherCondition.php';
+
+$weather = new WeatherManager\WeatherCondition();
+$weatherConditions = $weather->getConditions();
+//dump($weatherConditions);die();
+
+header('Content-Type: application/json');
+echo json_encode($weatherConditions);
+

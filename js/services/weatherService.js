@@ -1,5 +1,5 @@
-app.factory('weather', ['$http', function($http) {
-    return $http.get('http://localhost/spa-clock-weather/php/weather.php')
+app.factory('weatherService', ['$http', function($http) {
+    return $http.get('http://localhost/spa-clock-weather/php/weatherService.php')
         .success(function(result) {
             return result;
         })
