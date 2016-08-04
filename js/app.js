@@ -1,4 +1,4 @@
-var app = angular.module('clockApp', []);
+var app = angular.module('dashboardApp', []);
 
 app.filter('weatherFilter', function() {
     return function(record) {
