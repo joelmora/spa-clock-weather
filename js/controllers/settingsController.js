@@ -1,11 +1,8 @@
-app.controller('meteorologyController', ['$scope', 'weatherService', 'forecastService', function($scope, weatherService, forecastService) {
+app.controller('settingsController', ['$scope', '$translate', function($scope, $translate) {
 
-    weatherService.success(function(data) {
-        $scope.weather = data;
-    });
-
-    forecastService.success(function(data) {
-        $scope.forecast = data;
-    });
+    $scope.changeLanguage = function(lang)
+    {
+        $translate.use(lang);
+    }
 
 }]);

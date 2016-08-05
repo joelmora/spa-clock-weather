@@ -6,12 +6,28 @@ class Forecast
 {
     private $url;
     private $city;
+    private $monthsTranslation;
 
     public function __construct()
     {
         //default value
         $this->url = 'http://186.42.174.236:8080/WebServicesRest/webresources/ec.gob.inamhi.rs/pronostico';
         $this->city = 'QUITO';
+
+        $this->monthsTranslation = array(
+            'Enero' => 'January',
+            'Febrero' => 'February',
+            'Marzo' => 'March',
+            'Abril' => 'April',
+            'Mayo' => 'May',
+            'Junio' => 'June',
+            'Julio' => 'July',
+            'Agosto' => 'August',
+            'Septiembre' => 'September',
+            'Octubre' => 'October',
+            'Noviembre' => 'November',
+            'Diciembre' => 'December'
+        );
     }
 
     public function getForecast()
@@ -41,6 +57,13 @@ class Forecast
                 $forecastData['temp']['min'] = $record->temperaturamin;
                 $forecastData['temp']['max'] = $record->temperaturamax;
                 $forecastData['condition'] = $record->condicion;
+
+                $date = array();
+                preg_match_all('/(\d+)h00 del (\d+) de (\w+) del (\d+)$/', $record->observacion, $date);
+                $month = strtr($date[3][0], $this->monthsTranslation);
+
+                $expireOn = \DateTime::createFromFormat('Y-M-d H', $date[4][0] . '-' . $month . '-' . $date[2][0] . ' ' . $date[1][0]);
+                $forecastData['expireOn'] = $expireOn->format('Y-m-d H:i:s');
             }
         }
 

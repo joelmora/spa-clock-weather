@@ -1,4 +1,4 @@
-var app = angular.module('dashboardApp', []);
+var app = angular.module('dashboardApp', ['pascalprecht.translate']);
 
 app.filter('weatherFilter', function() {
     return function(record) {
@@ -9,3 +9,10 @@ app.filter('weatherFilter', function() {
         }
     }
 });
+
+app.config(['$translateProvider', function ($translateProvider) {
+    $translateProvider.translations('en', translationsEN);
+    $translateProvider.translations('es', translationsES);
+    $translateProvider.useSanitizeValueStrategy(null);
+    $translateProvider.preferredLanguage('en');
+}]);

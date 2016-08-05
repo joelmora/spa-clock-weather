@@ -42,6 +42,11 @@ class WeatherCondition
         $weatherData = array();
 
         foreach ($rawData->iE as $record) {
+            //current timestamp
+            if ($record->fe AND !$weatherData['timestamp']) {
+                $weatherData['timestamp'] = $record->fe;
+            }
+
             //humidity
             if ($record->pa == 'HUMEDAD RELATIVA DEL AIRE' AND $record->de == 'MINIMA') {
                 $weatherData['humidity']['min']['value'] = $record->da;
