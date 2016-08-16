@@ -8,32 +8,46 @@
     <script src="js/libs/easeljs-0.8.2.min.js"></script>
     <script src="js/libs/tweenjs-0.6.2.min.js"></script>
     <script src="js/libs/moment.min.js"></script>
+
+    <link rel="stylesheet" href="css/grid.css">
+    <link rel="stylesheet" href="css/main.css">
 </head>
 <body ng-app="dashboardApp">
-<div ng-controller="meteorologyController">
-    {{ weather.temperature.now | weatherFilter }}
-    {{ forecast.temp.min }}
+<div style="width: 800px; height: 600px; border: 1px solid #ddd">
+    <!--<div ng-controller="settingsController">-->
+    <!--<button ng-click="changeLanguage('en')" translate>BUTTON_LANG_EN</button>-->
+    <!--<button ng-click="changeLanguage('es')" translate>BUTTON_LANG_ES</button>-->
+    <!--</div>-->
+
+    <div class="row">
+        <div class="col-xs-8">
+            <clock width="500" height="500"></clock>
+        </div>
+        <div class="col-xs-4">
+            <div ng-controller="meteorologyController">
+                <span id="temperature">{{ weather.temperature.now | weatherFilter }}</span>
+            </div>
 
 
-    {{ 'HELLO' | translate }}
-    <div translate>PARAGRAPH</div>
-    <div translate="WEATHER.X_DEGREES_IN" translate-value-temp="20" translate-value-in="{{'AT_SUN' | translate}}"></div>
-    <button ng-click="updateMeteorology()">Update meteorology</button>
+            <!--{{ 'HELLO' | translate }}-->
+            <!--<div translate>PARAGRAPH</div>-->
+            <!--<div translate="WEATHER.X_DEGREES_IN" translate-value-temp="20" translate-value-in="{{'AT_SUN' | translate}}"></div>-->
+            <!--<button ng-click="updateMeteorology()">Update meteorology</button>-->
+
+            <div ng-controller="calendarController">
+                {{date}}
+            </div>
+
+        </div>
+    </div>
 </div>
-
-<div ng-controller="settingsController">
-    <button ng-click="changeLanguage('en')" translate>BUTTON_LANG_EN</button>
-    <button ng-click="changeLanguage('es')" translate>BUTTON_LANG_ES</button>
-</div>
-
-<!--<clock width="400" height="400"></clock>-->
-
 <!-- Modules -->
 <script src="js/app.js"></script>
 
 <!-- Controllers -->
 <script src="js/controllers/meteorologyController.js"></script>
 <script src="js/controllers/settingsController.js"></script>
+<script src="js/controllers/calendarController.js"></script>
 
 <!-- Services -->
 <script src="js/services/weatherService.js"></script>
