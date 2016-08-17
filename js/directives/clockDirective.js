@@ -7,7 +7,7 @@ app.directive('clock', function() {
             type: '='
         },
         templateUrl: 'view/directives/clock.html',
-        link: function(scope) {
+        link: function() {
             init();
 
             function init() {
@@ -17,7 +17,7 @@ app.directive('clock', function() {
                 var sec = 1000;
                 var min = sec * 60;
                 var hour = min * 60;
-                var now = moment();
+                var now = moment.duration(moment().format('H:m:s'));
 
                 var background = new createjs.Bitmap('assets/background.jpg');
 
@@ -31,7 +31,7 @@ app.directive('clock', function() {
                 hourHand.regY = 4 + 255 + offsetY;
                 hourHand.x = 253 + offsetX;
                 hourHand.y = 255 + offsetY;
-                hourHand.rotation = timeToDegree(now.hours(), true);
+                hourHand.rotation = timeToDegree(now.asHours(), true);
 
                 var minuteHand = new createjs.Shape();
                 minuteHand.graphics.beginFill("#333").drawRoundRect(253 + offsetX, 255 + offsetY, 230, 8, 0);

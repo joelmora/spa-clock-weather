@@ -1,10 +1,10 @@
 var app = angular.module('dashboardApp', ['pascalprecht.translate']);
 
-app.filter('weatherFilter', function() {
+app.filter('weatherFilter', function($filter) {
     return function(record) {
         if (record) {
             var output;
-            output = record.value +  record.unit;
+            output = $filter('number')(record.value, 1) +  record.unit;
             return output;
         }
     }

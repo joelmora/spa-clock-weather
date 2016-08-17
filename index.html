@@ -25,7 +25,39 @@
         </div>
         <div class="col-xs-4">
             <div ng-controller="meteorologyController">
-                <span id="temperature">{{ weather.temperature.now | weatherFilter }}</span>
+                <div id="city">Quito, EC</div>
+                <div id="temperature">{{ weather.windChill.now | weatherFilter }}</div>
+                <div id="temperatureRange" class="row">
+                    <div class="col-xs-4">
+                        Min: {{ weather.temperature.min | weatherFilter }}
+                    </div>
+                    <div class="col-xs-4">
+                        Now: {{ weather.temperature.now | weatherFilter }}
+                    </div>
+                    <div class="col-xs-4">
+                        Max: {{ weather.temperature.max | weatherFilter }}
+                    </div>
+                </div>
+                <div id="wind" class="row">
+                    <div class="col-xs-6">
+                        Speed: {{ weather.windSpeed.now | weatherFilter }}
+                    </div>
+                    <div class="col-xs-6">
+                        Direction: {{ weather.windDirection.now | weatherFilter}}
+                    </div>
+                </div>
+                <div id="rain">{{ weather.rain.sum | weatherFilter }}</div>
+                <div id="humidityRange" class="row">
+                    <div class="col-xs-4">
+                        Min: {{ weather.humidity.min | weatherFilter }}
+                    </div>
+                    <div class="col-xs-4">
+                        Now: {{ weather.humidity.now | weatherFilter }}
+                    </div>
+                    <div class="col-xs-4">
+                        Max: {{ weather.humidity.max | weatherFilter }}
+                    </div>
+                </div>
             </div>
 
 
@@ -35,7 +67,7 @@
             <!--<button ng-click="updateMeteorology()">Update meteorology</button>-->
 
             <div ng-controller="calendarController">
-                {{date}}
+                <!--{{date}}-->
             </div>
 
         </div>
