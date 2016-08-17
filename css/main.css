@@ -2,15 +2,45 @@
     font-family: "Open Sans Light";
     src: url(../fonts/OpenSans-Light.ttf);
 }
+@font-face {
+    font-family: "Open Sans Regular";
+    src: url(../fonts/OpenSans-Regular.ttf);
+}
 
 body {
     font-family: "Open Sans Light", Helvetica, Arial, sans-serif;
 }
 
+#meteorologyController > .row {
+    margin-bottom: 20px;
+}
 #city {
     font-size: 110%;
 }
 #temperature {
     font-size: 350%;
     line-height: 45px;
+}
+/*Icon Sizes*/
+#temperatureRange .wi-thermometer,
+#humidityRange .wi-humidity,
+#wind i[class*=wi-wind-beaufort]{
+    font-size: 170%;
+    margin-top: 10px;
+}
+#rain .wi-raindrops {
+    font-size: 350%;
+    margin-top: 10px;
+    line-height: 13px;
+}
+/*Small values format*/
+#temperatureRange span:not(.value),
+#humidityRange span:not(.value){
+    font-size: 80%;
+    font-family: "Open Sans Light", Helvetica, Arial, sans-serif;
+}
+#temperatureRange span.value,
+#humidityRange span.value,
+#wind div.description{
+    font-family: "Open Sans Regular", Helvetica, Arial, sans-serif;
 }

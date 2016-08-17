@@ -90,10 +90,13 @@ class WeatherCondition
             if ($record->pa == 'VIENTO DIRECCION' AND $record->de == 'INSTANTANEA') {
                 $weatherData['windDirection']['now']['value'] = $record->da;
                 $weatherData['windDirection']['now']['unit'] = $record->si;
+                $weatherData['windDirection']['now']['round'] = $this->windDegreesRound($record->da);
             }
             if ($record->pa == 'VIENTO VELOCIDAD' AND $record->de == 'INSTANTANEA') {
-                $weatherData['windSpeed']['now']['value'] = $record->da;
-                $weatherData['windSpeed']['now']['unit'] = $record->si;
+                $velocity = $this->msTokh($record->da);
+                $weatherData['windSpeed']['now']['value'] = $velocity['value'];
+                $weatherData['windSpeed']['now']['unit'] = $velocity['unit'];
+                $weatherData['windSpeed']['now']['beaufort'] = $this->windToBeaufort($velocity['value']);
             }
         }
 
@@ -113,6 +116,76 @@ class WeatherCondition
     }
 
     /**
+     * Return closest value from available icons
+     * @param $degree
+     * @return mixed|null
+     * @author Joel Mora
+     */
+    private function windDegreesRound($degree)
+    {
+        $availableIcons = array(0, 23, 45, 68, 90, 113, 135, 158, 180, 203, 225, 248, 270, 293, 313, 336);
+
+        $closest = null;
+        foreach ($availableIcons as $item) {
+            if ($closest === null || abs($degree - $closest) > abs($item - $degree)) {
+                $closest = $item;
+            }
+        }
+        
+        return $closest;
+    }
+
+    /**
+     * Wind is Km/h to beaufort scale
+     * @param $wind
+     * @return array
+     * @author Joel Mora
+     */
+    private function windToBeaufort($wind)
+    {
+        if ($wind < 1) {
+            return array('force' => 0, 'description' => 'Calm');
+        } elseif ($wind > 1 AND $wind < 5) {
+            return array('force' => 1, 'description' => 'Light Air');
+        } elseif ($wind > 6 AND $wind < 11) {
+            return array('force' => 2, 'description' => 'Light Breeze');
+        } elseif ($wind > 12 AND $wind < 19) {
+            return array('force' => 3, 'description' => 'Gentle Breeze');
+        } elseif ($wind > 20 AND $wind < 28) {
+            return array('force' => 4, 'description' => 'Moderate Breeze');
+        } elseif ($wind > 29 AND $wind < 38) {
+            return array('force' => 5, 'description' => 'Fresh Breeze');
+        } elseif ($wind > 39 AND $wind < 49) {
+            return array('force' => 6, 'description' => 'Strong Breeze');
+        } elseif ($wind > 50 AND $wind < 61) {
+            return array('force' => 7, 'description' => 'Near Gale');
+        } elseif ($wind > 62 AND $wind < 74) {
+            return array('force' => 8, 'description' => 'Gale');
+        } elseif ($wind > 75 AND $wind < 88) {
+            return array('force' => 9, 'description' => 'Strong Gale');
+        } elseif ($wind > 89 AND $wind < 102) {
+            return array('force' => 10, 'description' => 'Storm');
+        } elseif ($wind > 103 AND $wind < 107) {
+            return array('force' => 11, 'description' => 'Violent Storm');
+        } else {
+            return array('force' => 12, 'description' => 'Hurricane');
+        }
+    }
+
+    /**
+     * @param $velocity
+     * @return array
+     * @author Joel Mora
+     */
+    private function msTokh($velocity)
+    {
+        return array(
+            'value' => ($velocity / 1000) * 3600,
+            'unit' => 'k/h',
+        );
+    }
+
+    /**
      * @param $temperature float temperature in ºC
      * @param $wind float wind in m/s
      * @return array
@@ -121,7 +194,7 @@ class WeatherCondition
     private function calculateWindChill($temperature, $wind)
     {
         // m/s to km/h
-        $windKMH = ($wind / 1000) * 3600;
+        $windKMH = $this->msTokh($wind);
 
         $sensation = 13.12 + 0.6215 * $temperature - 11.37 * pow($windKMH, 0.16) + 0.3965 * $temperature * pow($windKMH, 0.16);
 
