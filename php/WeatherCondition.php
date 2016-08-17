@@ -43,7 +43,7 @@ class WeatherCondition
 
         foreach ($rawData->iE as $record) {
             //current timestamp
-            if ($record->fe AND !$weatherData['timestamp']) {
+            if ($record->fe AND !isset($weatherData['timestamp'])) {
                 $weatherData['timestamp'] = $record->fe;
             }
 

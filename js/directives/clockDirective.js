@@ -12,47 +12,47 @@ app.directive('clock', function() {
 
             function init() {
                 var stage = new createjs.Stage("canvasClock");
-                var canvasWidth = scope.width;
-                var canvasHeight = scope.height;
-                var canvasWidthH = canvasWidth / 2;
-                var canvasHeightH = canvasHeight / 2;
+                var offsetX = 20;
+                var offsetY = 40;
                 var sec = 1000;
                 var min = sec * 60;
                 var hour = min * 60;
                 var now = moment();
 
-//            console.debug(now.toString())
-//            console.debug(timeToDegree(1, true))
+                var background = new createjs.Bitmap('assets/background.jpg');
 
-
-                var clockBorder = new createjs.Shape();
-                clockBorder.graphics.setStrokeStyle(8,"round").beginStroke("#333").drawCircle(canvasWidthH, canvasHeightH, canvasWidthH);
-
-                var clockMiddle = new createjs.Shape();
-                clockMiddle.graphics.beginFill("#000").drawCircle(canvasWidthH, canvasHeightH, 10);
+                var clock = new createjs.Bitmap('assets/clock.png');
+                clock.x = offsetX;
+                clock.y = offsetY;
 
                 var hourHand = new createjs.Shape();
-                hourHand.graphics.beginFill("#000").drawRoundRect(canvasWidthH, canvasHeightH, canvasWidthH * 0.5, 10, 3);
-                hourHand.regX = hourHand.x = hourHand.y = canvasWidthH;
-                hourHand.regY = canvasWidthH + 5;
+                hourHand.graphics.beginFill("#070707").drawRoundRect(253 + offsetX, 255 + offsetY, 176, 8, 0);
+                hourHand.regX = 55 + 253 + offsetX;
+                hourHand.regY = 4 + 255 + offsetY;
+                hourHand.x = 253 + offsetX;
+                hourHand.y = 255 + offsetY;
                 hourHand.rotation = timeToDegree(now.hours(), true);
 
                 var minuteHand = new createjs.Shape();
-                minuteHand.graphics.beginFill("#555").drawRoundRect(canvasWidthH, canvasHeightH, canvasWidthH * 0.7, 7, 3);
-                minuteHand.regX = minuteHand.x = minuteHand.y = canvasWidthH;
-                minuteHand.regY = canvasWidthH + 3.5;
+                minuteHand.graphics.beginFill("#333").drawRoundRect(253 + offsetX, 255 + offsetY, 230, 8, 0);
+                minuteHand.regX = 60 + 253 + offsetX;
+                minuteHand.regY = 4 + 255 + offsetY;
+                minuteHand.x = 253 + offsetX;
+                minuteHand.y = 255 + offsetY;
                 minuteHand.rotation = timeToDegree(now.minutes());
 
-//            var secondHand = new createjs.Bitmap('http://paulrhayes.com/experiments/clock/images/minuteHand.png');
-                var secondHand = new createjs.Shape();
-                secondHand.graphics.beginFill("#999").drawRoundRect(canvasWidthH, canvasHeightH, canvasWidthH * 0.9, 4, 3);
-                secondHand.regX = secondHand.x = secondHand.y = canvasWidthH;
-                secondHand.regY = canvasWidthH + 2;
+                var secondHand = new createjs.Bitmap('assets/second.png');
+                secondHand.regX = 80;
+                secondHand.regY = 4;
+                secondHand.x = 253 + offsetX;
+                secondHand.y = 255 + offsetY;
                 secondHand.rotation = timeToDegree(now.seconds());
 
-                stage.addChild(clockBorder);
-                stage.addChild(hourHand, minuteHand, secondHand);
-                stage.addChild(clockMiddle);
+                stage.addChild(background);
+                stage.addChild(clock);
+                stage.addChild(hourHand);
+                stage.addChild(minuteHand);
+                stage.addChild(secondHand);
 
                 createjs.Tween.get(hourHand, {loop: true})
                     .to({rotation: hourHand.rotation + 360}, 12 * hour)
@@ -61,7 +61,6 @@ app.directive('clock', function() {
                     .to({rotation: minuteHand.rotation + 360}, 60 * min)
                 ;
 
-                var angle = 0
                 createjs.Tween.get(secondHand, {loop: true})
                     .to({rotation: secondHand.rotation + 360}, 60 * sec)
                 ;
