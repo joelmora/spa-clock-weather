@@ -2,11 +2,17 @@ app.controller('calendarController', ['$scope', '$interval', function($scope, $i
 
     var calendarInterval;
 
+    this.updateCalendar = function()
+    {
+        $scope.day = moment().format('DD');
+        $scope.month = moment().format('MMM');
+        $scope.weekday = moment().format('dddd');
+    };
+
     calendarInterval = $interval(function()
     {
-        //TODO
-        $scope.date = moment().format('Y-M-D');
+        this.updateCalendar();
     }.bind(this), 1000);
 
-
+    this.updateCalendar();
 }]);

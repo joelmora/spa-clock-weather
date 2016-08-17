@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="css/weather-icons-wind.css">
 </head>
 <body ng-app="dashboardApp">
-<div style="width: 800px; height: 600px; border: 1px solid #ddd">
+<div style="width: 800px; height: 600px" class="container">
     <!--<div ng-controller="settingsController">-->
     <!--<button ng-click="changeLanguage('en')" translate>BUTTON_LANG_EN</button>-->
     <!--<button ng-click="changeLanguage('es')" translate>BUTTON_LANG_ES</button>-->
@@ -25,54 +25,64 @@
         <div class="col-xs-8">
             <clock width="800" height="600"></clock>
         </div>
-        <div class="col-xs-4">
-            <div id="meteorologyController" ng-controller="meteorologyController">
-                <div id="city">Quito, EC</div>
-                <div id="temperature" class="row">
-                    <div class="col-xs-12">
-                        {{ weather.windChill.now | weatherFilter }}
+        <div id="informationBar" class="col-xs-4">
+            <div id="meteorologyController" class="row" ng-controller="meteorologyController">
+                <div class="col-xs-12">
+                    <div id="city">Quito, EC</div>
+                    <div id="temperature" class="row">
+                        <div class="col-xs-12">
+                            {{ weather.windChill.now | weatherFilter }}
+                        </div>
                     </div>
-                </div>
 
-                <div id="temperatureRange" class="row">
-                    <div class="col-xs-2">
-                        <i class="wi wi-thermometer"></i>
+                    <hr>
+
+                    <div id="temperatureRange" class="row">
+                        <div class="col-xs-2">
+                            <i class="wi wi-thermometer"></i>
+                        </div>
+                        <div class="col-xs-3">
+                            <span>{{'MIN' | translate}}:</span>
+                            <span class="value">{{ weather.temperature.min | weatherFilter: showUnit: false }}º</span>
+                        </div>
+                        <div class="col-xs-3">
+                            <span>{{'NOW' | translate}}:</span>
+                            <span class="value">{{ weather.temperature.now | weatherFilter: showUnit: false }}º</span>
+                        </div>
+                        <div class="col-xs-3">
+                            <span>{{'MAX' | translate}}:</span>
+                            <span class="value">{{ weather.temperature.max | weatherFilter: showUnit: false }}º</span>
+                        </div>
                     </div>
-                    <div class="col-xs-3">
-                        <span>{{'MIN' | translate}}:</span>
-                        <span class="value">{{ weather.temperature.min | weatherFilter: showUnit: false }}º</span>
+                    <div id="wind" class="row">
+                        <div class="col-xs-2">
+                            <i class="wi wi-wind-beaufort-{{weather.windSpeed.now.beaufort.force}}"></i>
+                        </div>
+                        <div class="col-xs-10">
+                            <div class="description">{{ 'WEATHER.BEAUFORT_' + weather.windSpeed.now.beaufort.force | translate }}</div>
+                            <div class="value">{{ weather.windSpeed.now | weatherFilter }}</div>
+                        </div>
                     </div>
-                    <div class="col-xs-3">
-                        <span>{{'NOW' | translate}}:</span>
-                        <span class="value">{{ weather.temperature.now | weatherFilter: showUnit: false }}º</span>
-                    </div>
-                    <div class="col-xs-3">
-                        <span>{{'MAX' | translate}}:</span>
-                        <span class="value">{{ weather.temperature.max | weatherFilter: showUnit: false }}º</span>
-                    </div>
-                </div>
-                <div id="wind" class="row">
-                    <div class="col-xs-2">
-                        <i class="wi wi-wind-beaufort-{{weather.windSpeed.now.beaufort.force}}"></i>
-                    </div>
-                    <div class="col-xs-10">
-                        <div class="description">{{ 'WEATHER.BEAUFORT_' + weather.windSpeed.now.beaufort.force | translate }}</div>
-                        <div class="value">{{ weather.windSpeed.now | weatherFilter }}</div>
-                    </div>
-                </div>
-                <div id="rain" class="row">
-                    <div class="col-xs-2">
-                        <i class="wi wi-raindrops"></i>
-                    </div>
-                    <div class="col-xs-10">
-                        {{ weather.rain.sum | weatherFilter }}
+                    <div id="rain" class="row">
+                        <div class="col-xs-2">
+                            <i class="wi wi-raindrops"></i>
+                        </div>
+                        <div class="col-xs-10">
+                            {{ weather.rain.sum | weatherFilter }}
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div ng-controller="calendarController">
-                <!--{{date}}-->
+            <hr>
+
+            <div id="calendarController" class="row" ng-controller="calendarController">
+                <div class="col-xs-12">
+                    <div class="date">{{'CALENDAR.' + weekday | translate}}, <strong>{{day}}</strong> {{'CALENDAR.' + month | translate}}</div>
+                </div>
             </div>
+
+            <hr>
 
         </div>
     </div>

@@ -1,14 +1,10 @@
 var translationsES = {
-    HELLO: 'Hola',
-    PARAGRAPH: 'Parrafo',
     BUTTON_LANG_EN: 'Ingles',
     BUTTON_LANG_ES: 'Español',
-    AT_SUN: 'en el sol',
     MIN: 'Min',
     NOW: 'Ahora',
     MAX: 'Max',
     WEATHER: {
-        X_DEGREES_IN: '{{temp}} grados {{in}}',
         BEAUFORT_0: 'Calma',
         BEAUFORT_1: 'Aire Suave',
         BEAUFORT_2: 'Brisa Debil',
@@ -22,5 +18,18 @@ var translationsES = {
         BEAUFORT_10: 'Tormenta',
         BEAUFORT_11: 'Tormenta Violenta',
         BEAUFORT_12: 'Huracan'
+    },
+    CALENDAR: {
+        Jan: 'Ene',
+        Apr: 'Abr',
+        Aug: 'Ago',
+        Dec: 'Dic',
+        Monday: 'Lunes',
+        Tuesday: 'Martes',
+        Wednesday: 'Miercoles',
+        Thursday: 'Jueves',
+        Friday: 'Viernes',
+        Saturday: 'Sabado',
+        Sunday: 'Domingo'
     }
 };

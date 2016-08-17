@@ -11,7 +11,14 @@ body {
     font-family: "Open Sans Light", Helvetica, Arial, sans-serif;
 }
 
-#meteorologyController > .row {
+#canvasClock {
+    margin-left: -15px;
+}
+#informationBar {
+    margin-top: 10px;
+    height: 600px;
+}
+#meteorologyController > .col-xs-12 > .row {
     margin-bottom: 20px;
 }
 #city {
@@ -28,6 +35,9 @@ body {
     font-size: 170%;
     margin-top: 10px;
 }
+#rain {
+    margin-bottom: 0 !important;
+}
 #rain .wi-raindrops {
     font-size: 350%;
     margin-top: 10px;
@@ -43,4 +53,16 @@ body {
 #humidityRange span.value,
 #wind div.description{
     font-family: "Open Sans Regular", Helvetica, Arial, sans-serif;
+}
+
+hr {
+    border-color: #bbb;
+}
+
+/*Calendar*/
+#calendarController {
+    text-align: center;
+}
+#calendarController .date {
+    font-size: 150%;
 }
