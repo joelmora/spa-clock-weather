@@ -6,14 +6,18 @@ require_once 'CurlManager.php';
 
 class WeatherCondition
 {
-    private $url;
+    private $weatherUrl;
+    private $sunsetUrl;
     private $station;
 
     public function __construct()
     {
         //default values
-        $this->url = 'http://186.42.174.236:8080/WebServicesRest/webresources/ec.gob.inamhi.puob/paramxesta/';
+        $this->weatherUrl = 'http://186.42.174.236:8080/WebServicesRest/webresources/ec.gob.inamhi.puob/paramxesta/';
+        $this->sunsetUrl = 'http://api.sunrise-sunset.org/json';
         $this->station = 'M0024';
+        $this->latitude = '-0.132829';
+        $this->longitude = '-78.499351';
     }
 
     /**
@@ -23,28 +27,36 @@ class WeatherCondition
      */
     public function getConditions()
     {
-//        $curl = new CurlManager();
-//        $forecastRaw = $curl->getData($this->getUrl());
+        $curl = new CurlManager();
+//        $forecastRaw = $curl->getData($this->getWeatherUrl());
         
         //FIXME TEST
         $json = '{"fu":"Inamhi","iE":[{"fe":"2016-08-03 10:00:00","da":"40.0","si":"%","pa":"HUMEDAD RELATIVA DEL AIRE","de":"MINIMA","ti":"VAISALA CLIMATOLOGICA PRINCIPAL"},{"fe":"2016-08-03 10:00:00","da":"47.0","si":"%","pa":"HUMEDAD RELATIVA DEL AIRE","de":"MAXIMA","ti":"VAISALA CLIMATOLOGICA PRINCIPAL"},{"fe":"2016-08-03 10:00:00","da":"41.0","si":"%","pa":"HUMEDAD RELATIVA DEL AIRE","de":"INSTANTANEA","ti":"VAISALA CLIMATOLOGICA PRINCIPAL"},{"fe":"2016-08-03 10:00:00","da":"0.0","si":"mm","pa":"PRECIPITACION","de":"SUMA","ti":"VAISALA CLIMATOLOGICA PRINCIPAL"},{"fe":"2016-08-03 10:00:00","da":"731.5","si":"hPa","pa":"PRESION ATMOSFERICA","de":"INSTANTANEA","ti":"VAISALA CLIMATOLOGICA PRINCIPAL"},{"fe":"2016-08-03 10:00:00","da":"19.5","si":"ºC","pa":"TEMPERATURA AIRE","de":"MAXIMA","ti":"VAISALA CLIMATOLOGICA PRINCIPAL"},{"fe":"2016-08-03 10:00:00","da":"19.3","si":"ºC","pa":"TEMPERATURA AIRE","de":"INSTANTANEA","ti":"VAISALA CLIMATOLOGICA PRINCIPAL"},{"fe":"2016-08-03 10:00:00","da":"16.7","si":"ºC","pa":"TEMPERATURA AIRE","de":"MINIMA","ti":"VAISALA CLIMATOLOGICA PRINCIPAL"},{"fe":"2016-08-03 10:00:00","da":"183.0","si":"º","pa":"VIENTO DIRECCION","de":"INSTANTANEA","ti":"VAISALA CLIMATOLOGICA PRINCIPAL"},{"fe":"2016-08-03 10:00:00","da":"1.9","si":"m/s","pa":"VIENTO VELOCIDAD","de":"INSTANTANEA","ti":"VAISALA CLIMATOLOGICA PRINCIPAL"}]}';
         $forecastRaw = json_decode($json);
         //FIXME END TEST
+        
+        //sunrise & sunset
+        $today = new \DateTime();
+        $tomorrow = new \DateTime('tomorrow');
+        $sunset = $curl->getData($this->getSunsetUrl($today));
+        $sunrise = $curl->getData($this->getSunsetUrl($tomorrow));
 
-        return $this->formatConditions($forecastRaw);
+        return $this->formatConditions($forecastRaw, $sunrise, $sunset);
     }
 
     /**
      * Format condition to be used on GUI
-     * @param $rawData
+     * @param $weatherRaw
+     * @param $sunriseData
+     * @param $sunsetData
      * @return array
      * @author Joel Mora
      */
-    private function formatConditions($rawData)
+    private function formatConditions($weatherRaw, $sunriseData, $sunsetData)
     {
         $weatherData = array();
 
-        foreach ($rawData->iE as $record) {
+        foreach ($weatherRaw->iE as $record) {
             //current timestamp
             if ($record->fe AND !isset($weatherData['timestamp'])) {
                 $weatherData['timestamp'] = $record->fe;
@@ -111,6 +123,15 @@ class WeatherCondition
             $weatherData['windChill']['now']['value'] = $windChill;
             $weatherData['windChill']['now']['unit'] = $weatherData['temperature']['now']['unit'];
         }
+
+        //sunset
+        $sunset = new \DateTime($sunsetData->results->sunset);
+        $sunset->setTimezone(new \DateTimeZone('America/Guayaquil'));
+        $weatherData['sunsetAt'] = $sunset->format('H:m');
+
+        $sunrise = new \DateTime($sunriseData->results->sunrise);
+        $sunrise->setTimezone(new \DateTimeZone('America/Guayaquil'));
+        $weatherData['sunriseAt'] = $sunrise->format('H:m');
 
         return $weatherData;
     }
@@ -204,17 +225,17 @@ class WeatherCondition
     /**
      * @return string
      */
-    public function getUrl()
+    public function getWeatherUrl()
     {
-        return $this->url . $this->station;
+        return $this->weatherUrl . $this->station;
     }
 
     /**
      * @param string $url
      */
-    public function setUrl($url)
+    public function setWeatherUrl($url)
     {
-        $this->url = $url;
+        $this->weatherUrl = $url;
     }
 
     /**
@@ -233,5 +254,28 @@ class WeatherCondition
         $this->station = $station;
     }
 
+    /**
+     * @return string
+     */
+    public function getSunsetUrl(\DateTime $date)
+    {
+        $query = array(
+            'lat' => $this->latitude,
+            'lng' => $this->longitude,
+            'date' => $date->format('Y-m-d'),
+            'formatted' => 0,
+        );
+        return $this->sunsetUrl . '?' . http_build_query($query);
+    }
+
+    /**
+     * @param string $sunsetUrl
+     */
+    public function setSunsetUrl($sunsetUrl)
+    {
+        $this->sunsetUrl = $sunsetUrl;
+    }
+    
+    
 
 }

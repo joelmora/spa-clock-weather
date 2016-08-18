@@ -33,6 +33,11 @@ app.controller('meteorologyController', ['$scope', 'weatherService', 'forecastSe
         this.loadCurrentWeather();
         this.loadCurrentForecast();
     }.bind(this);
+    
+    $scope.getHour = function()
+    {
+        return moment().format('HH:mm');
+    };
 
     //call the weather service every 'updateWeatherEveryMinutes' time
     weatherChecker = $interval(function()

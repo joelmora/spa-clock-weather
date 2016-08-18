@@ -14,6 +14,8 @@ var translationsEN = {
         BEAUFORT_9: 'Strong Gale',
         BEAUFORT_10: 'Storm',
         BEAUFORT_11: 'Violent Storm',
-        BEAUFORT_12: 'Hurricane'
+        BEAUFORT_12: 'Hurricane',
+        SUNSET_AT: 'Sunset At',
+        SUNRISE_AT: 'Sunrise At'
     }
 };

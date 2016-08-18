@@ -29,9 +29,10 @@
             <div id="meteorologyController" class="row" ng-controller="meteorologyController">
                 <div class="col-xs-12">
                     <div id="city">Quito, EC</div>
+                    <hr style="margin-top: 2px">
                     <div id="temperature" class="row">
                         <div class="col-xs-12">
-                            {{ weather.windChill.now | weatherFilter }}
+                            <div class="value">{{ weather.windChill.now | weatherFilter }}</div>
                         </div>
                     </div>
 
@@ -71,6 +72,34 @@
                             {{ weather.rain.sum | weatherFilter }}
                         </div>
                     </div>
+                    <div id="sunset" class="row" ng-hide="weather.sunsetAt < getHour()">
+                        <div class="col-xs-2">
+                            <i class="wi wi-horizon"></i>
+                        </div>
+                        <div class="col-xs-10">
+                            {{hour}}
+                            {{'WEATHER.SUNSET_AT' | translate}}:
+                            <span class="sunset-time">{{weather.sunsetAt}}</span>
+                        </div>
+                    </div>
+                    <div id="sunrise" class="row" ng-show="weather.sunsetAt < getHour()">
+                        <div class="col-xs-2">
+                            <i class="wi wi-sunrise"></i>
+                        </div>
+                        <div class="col-xs-10">
+                            {{'WEATHER.SUNRISE_AT' | translate}}:
+                            <span class="sunrise-time">{{weather.sunriseAt}}</span>
+                        </div>
+                    </div>
+                    <div id="forecast" class="row">
+                        <hr>
+                        <div class="col-xs-3">
+                            <i class="wi wi-cloudy-windy"></i>
+                        </div>
+                        <div class="col-xs-9">
+                            <div class="value">Parcial nublado con incremento ocasional de la nubosidad. Viento moderado.</div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -78,11 +107,10 @@
 
             <div id="calendarController" class="row" ng-controller="calendarController">
                 <div class="col-xs-12">
+                    <div class="hour">{{hour}}</div>
                     <div class="date">{{'CALENDAR.' + weekday | translate}}, <strong>{{day}}</strong> {{'CALENDAR.' + month | translate}}</div>
                 </div>
             </div>
-
-            <hr>
 
         </div>
     </div>

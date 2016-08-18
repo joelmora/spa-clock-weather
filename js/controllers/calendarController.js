@@ -7,6 +7,8 @@ app.controller('calendarController', ['$scope', '$interval', function($scope, $i
         $scope.day = moment().format('DD');
         $scope.month = moment().format('MMM');
         $scope.weekday = moment().format('dddd');
+        
+        $scope.hour = moment().format('H:mm');
     };
 
     calendarInterval = $interval(function()

@@ -17,7 +17,9 @@ var translationsES = {
         BEAUFORT_9: 'Viento Muy Duro',
         BEAUFORT_10: 'Tormenta',
         BEAUFORT_11: 'Tormenta Violenta',
-        BEAUFORT_12: 'Huracan'
+        BEAUFORT_12: 'Huracan',
+        SUNSET_AT: 'Puesta de Sol a las',
+        SUNRISE_AT: 'Amanecer a las'
     },
     CALENDAR: {
         Jan: 'Ene',

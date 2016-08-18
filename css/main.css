@@ -21,27 +21,49 @@ body {
 #meteorologyController > .col-xs-12 > .row {
     margin-bottom: 20px;
 }
+#meteorologyController > .col-xs-12 > .row:last-child {
+    margin-bottom: 0;
+}
 #city {
     font-size: 110%;
+    text-align: left;
+    font-family: "Open Sans Regular", Helvetica, Arial, sans-serif;
 }
-#temperature {
+#temperature .value {
     font-size: 350%;
     line-height: 45px;
+    text-align: center;
 }
 /*Icon Sizes*/
 #temperatureRange .wi-thermometer,
 #humidityRange .wi-humidity,
-#wind i[class*=wi-wind-beaufort]{
+#wind i[class*=wi-wind-beaufort],
+#sunset .wi-horizon,
+#sunrise .wi-sunrise {
     font-size: 170%;
     margin-top: 10px;
 }
-#rain {
+#sunset,
+#sunrise {
     margin-bottom: 0 !important;
+}
+#sunset .wi-horizon,
+#sunrise .wi-sunrise {
+    line-height: 0;
 }
 #rain .wi-raindrops {
     font-size: 350%;
     margin-top: 10px;
     line-height: 13px;
+}
+#forecast .wi {
+    font-size: 350%;
+    margin-top: 10px;
+    line-height: 13px;
+}
+#forecast .value {
+    text-align: right;
+    font-size: 90%
 }
 /*Small values format*/
 #temperatureRange span:not(.value),
@@ -51,7 +73,9 @@ body {
 }
 #temperatureRange span.value,
 #humidityRange span.value,
-#wind div.description{
+#wind div.description,
+#sunset .sunset-time,
+#sunrise .sunrise-time {
     font-family: "Open Sans Regular", Helvetica, Arial, sans-serif;
 }
 
@@ -65,4 +89,7 @@ hr {
 }
 #calendarController .date {
     font-size: 150%;
+}
+#calendarController .hour {
+    font-size: 400%;
 }
