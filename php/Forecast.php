@@ -2,6 +2,8 @@
 
 namespace WeatherManager;
 
+require_once 'simple_html_dom.php';
+
 class Forecast
 {
     private $url;
@@ -11,7 +13,8 @@ class Forecast
     public function __construct()
     {
         //default value
-        $this->url = 'http://186.42.174.236:8080/WebServicesRest/webresources/ec.gob.inamhi.rs/pronostico';
+//        $this->url = 'http://186.42.174.236:8080/WebServicesRest/webresources/ec.gob.inamhi.rs/pronostico';
+        $this->url = 'http://www.serviciometeorologico.gob.ec/pronostico/prediccion.htm';
         $this->city = 'QUITO';
 
         $this->monthsTranslation = array(
@@ -34,14 +37,92 @@ class Forecast
     {
 //        $curl = new CurlManager();
 //        $forecastRaw = $curl->getData($this->getUrl());
-        
-        $json = '{"fuente":"INAMHI","informacion":"PronÃ³stico","sitio":"www.inamhi.gob.ec","correo":"servicio@inamhi.gob.ec","fecha":"04/08/2016 13:20:23","pronostico":[{"ciudad":"SANTA CRUZ","condicion":"Poco nuboso a parcial nublado. Viento moderado.","iconografia":"iconografia/viento.gif","temperaturamin":"21","temperaturamax":"29","observacion":"VÃ¡lido desde las 07h00 hasta las 19h00 del 12 de Julio del 2016"},{"ciudad":"SAN CRISTOBAL","condicion":"Parcial nublado. Viento moderado.","iconografia":"iconografia/viento.gif","temperaturamin":"20","temperaturamax":"27","observacion":"VÃ¡lido desde las 07h00 hasta las 19h00 del 12 de Julio del 2016"},{"ciudad":"ZAMORA","condicion":"<div align=\"left\">Parcial nublado a nublado, lloviznas aisladas. Niebla.","iconografia":"iconografia/llovizna.gif","temperaturamin":"17","temperaturamax":"23","observacion":"VÃ¡lido desde las 07h00 hasta las 19h00 del 12 de Julio del 2016"},{"ciudad":"MACAS","condicion":"Nublado a parcial nublado, lloviznas dispersas. Niebla.","iconografia":"iconografia/llovizna.gif","temperaturamin":"16","temperaturamax":"24","observacion":"VÃ¡lido desde las 07h00 hasta las 19h00 del 12 de Julio del 2016"},{"ciudad":"PUYO","condicion":"<div align=\"left\">\r\n                             <div align=\"left\">Nublado con claros, lluvias dispersas. Niebla.","iconografia":"iconografia/casinubladolluvia.gif","temperaturamin":"16","temperaturamax":"26","observacion":"VÃ¡lido desde las 07h00 hasta las 19h00 del 12 de Julio del 2016"},{"ciudad":"TENA","condicion":"<div align=\"left\">\r\n                           <div align=\"left\">Nublado, ocasional parcial nublado, lluvias aisladas.","iconografia":"iconografia/lluviasaisladas.gif","temperaturamin":"20","temperaturamax":"28","observacion":"VÃ¡lido desde las 07h00 hasta las 19h00 del 12 de Julio del 2016"},{"ciudad":"EL COCA","condicion":"Nublado variando a parcial nublado.","iconografia":"iconografia/parcialnublado.gif","temperaturamin":"22","temperaturamax":"31","observacion":"VÃ¡lido desde las 07h00 hasta las 19h00 del 12 de Julio del 2016"},{"ciudad":"LAGO AGRIO","condicion":"Nublado variando a parcial nublado.","iconografia":"iconografia/parcialnublado.gif","temperaturamin":"22","temperaturamax":"30","observacion":"VÃ¡lido desde las 07h00 hasta las 19h00 del 12 de Julio del 2016"},{"ciudad":"LOJA","condicion":"Nublado con claros, lloviznas.","iconografia":"iconografia/llovizna.gif","temperaturamin":"12","temperaturamax":"19","observacion":"VÃ¡lido desde las 07h00 hasta las 19h00 del 12 de Julio del 2016"},{"ciudad":"CUENCA","condicion":"Nublado variando a   parcial nublado.","iconografia":"iconografia/parcialnublado.gif","temperaturamin":"11","temperaturamax":"20","observacion":"VÃ¡lido desde las 07h00 hasta las 19h00 del 12 de Julio del 2016"},{"ciudad":"RIOBAMBA","condicion":"Nublado con claros. Viento moderado.","iconografia":"iconografia/viento.gif","temperaturamin":"9","temperaturamax":"21","observacion":"VÃ¡lido desde las 07h00 hasta las 19h00 del 12 de Julio del 2016"},{"ciudad":"AMBATO","condicion":"Nublado a ocasional parcial nublado.","iconografia":"iconografia/parcialnublado.gif","temperaturamin":"10","temperaturamax":"19","observacion":"VÃ¡lido desde las 07h00 hasta las 19h00 del 12 de Julio del 2016"},{"ciudad":"LATACUNGA","condicion":"Parcial nublado a nublado. Viento moderado.","iconografia":"iconografia/viento.gif","temperaturamin":"9","temperaturamax":"20","observacion":"VÃ¡lido desde las 07h00 hasta las 19h00 del 12 de Julio del 2016"},{"ciudad":"QUITO","condicion":"Parcial nublado. Viento moderado.","iconografia":"iconografia/viento.gif","temperaturamin":"10","temperaturamax":"23","observacion":"VÃ¡lido desde las 07h00 hasta las 19h00 del 12 de Julio del 2016"},{"ciudad":"IBARRA","condicion":"Parcial nublado. Viento moderado.","iconografia":"iconografia/viento.gif","temperaturamin":"12","temperaturamax":"24","observacion":"VÃ¡lido desde las 07h00 hasta las 19h00 del 12 de Julio del 2016"},{"ciudad":"TULCAN","condicion":"Nublado a  parcial nublado.","iconografia":"iconografia/parcialnublado.gif","temperaturamin":"8","temperaturamax":"16","observacion":"VÃ¡lido desde las 07h00 hasta las 19h00 del 12 de Julio del 2016"},{"ciudad":"MACHALA","condicion":"Nublado   variando a parcial nublado Bruma.","iconografia":"iconografia/bruma.gif","temperaturamin":"22","temperaturamax":"30","observacion":"VÃ¡lido desde las 07h00 hasta las 19h00 del 12 de Julio del 2016"},{"ciudad":"SALINAS","condicion":"Parcial nublado. Bruma.","iconografia":"iconografia/bruma.gif","temperaturamin":"24","temperaturamax":"26","observacion":"VÃ¡lido desde las 07h00 hasta las 19h00 del 12 de Julio del 2016"},{"ciudad":"GUAYAQUIL","condicion":"Nublado   variando a parcial nublado. Bruma.","iconografia":"iconografia/bruma.gif","temperaturamin":"22","temperaturamax":"30","observacion":"VÃ¡lido desde las 07h00 hasta las 19h00 del 12 de Julio del 2016"},{"ciudad":"QUEVEDO","condicion":"Nublado con claros. Niebla.","iconografia":"iconografia/niebla.gif","temperaturamin":"21","temperaturamax":"28","observacion":"VÃ¡lido desde las 07h00 hasta las 19h00 del 12 de Julio del 2016"},{"ciudad":"PORTOVIEJO","condicion":"Nublado   variando a parcial nublado.","iconografia":"iconografia/parcialnublado.gif","temperaturamin":"21","temperaturamax":"30","observacion":"VÃ¡lido desde las 07h00 hasta las 19h00 del 12 de Julio del 2016"},{"ciudad":"MANTA","condicion":"Nublado variando a  parcial nublado. Bruma.","iconografia":"iconografia/bruma.gif","temperaturamin":"23","temperaturamax":"28","observacion":"VÃ¡lido desde las 07h00 hasta las 19h00 del 12 de Julio del 2016"},{"ciudad":"SANTO DOMINGO DE LOS TSACHILAS","condicion":"Nublado, ocasional parcial nublado, lloviznas. Niebla.","iconografia":"iconografia/llovizna.gif","temperaturamin":"20","temperaturamax":"26","observacion":"VÃ¡lido desde las 07h00 hasta las 19h00 del 12 de Julio del 2016"},{"ciudad":"ESMERALDAS","condicion":"Nublado con claros.","iconografia":"iconografia/ocasionalparcialnublado.png","temperaturamin":"24","temperaturamax":"30","observacion":"VÃ¡lido desde las 07h00 hasta las 19h00 del 12 de Julio del 2016"}]}';
-        $forecastArray = json_decode($json);
+
+        $html = file_get_html($this->getUrl());
+
+        $forecastInterAndina = $html->find('table', 2);
+
+        foreach ($forecastInterAndina->find('tr') as $trCity) {
+            if ($trCity->find('td', 0)->plaintext == $this->getCity()) {
+                $forecastText = trim($trCity->find('td', 1)->plaintext);
+                $forecastIcon = $trCity->find('td', 2)->find('img', 0)->src;
+            }
+        }
+
+        var_dump($forecastText, $forecastIcon);
+
+        $name = array();
+        preg_match_all('/iconografia\/(\w+)\.\w+$/', $forecastIcon, $name);
+
+        switch($name[1][0]) {
+            case 'bruma':
+                $dayIcon = 'wi-day-fog';
+                $nightIcon = 'wi-night-fog';
+                break;
+            case 'calima':
+                $dayIcon = 'wi-day-haze';
+                $nightIcon = ''; //TODO
+                break;
+            case 'casinubladolluvia':
+                break;
+            case 'cenizavolcanica':
+                break;
+            case 'chubascosaislados':
+                break;
+            case 'chubascosdispersos':
+                break;
+            case 'despeado':
+                $dayIcon = 'wi-day-sunny';
+                $nightIcon = 'wi-night-clear';
+                break;
+            case 'humo':
+                break;
+            case 'llovizna':
+                break;
+            case 'lluvia':
+                break;
+            case 'lluviasaisladas':
+                $dayIcon = 'wi-day-showers';
+                $nightIcon = 'wi-night-showers';
+                break;
+            case 'niebla':
+                break;
+            case 'nublado':
+                $dayIcon = 'wi-cloudy';
+                $nightIcon = 'wi-cloudy';
+                break;
+            case 'nubladoconclaros':
+                $dayIcon = 'wi-night-partly-cloudy';
+                $nightIcon = 'wi-night-partly-cloudy';
+                break;
+            case 'ocasionalparcialnublado':
+                $dayIcon = 'wi-day-cloudy';
+                $nightIcon = 'wi-night-alt-cloudy';
+                break;
+            case 'parcialnublado':
+                $dayIcon = 'wi-day-cloudy';
+                $nightIcon = 'wi-night-alt-cloudy';
+                break;
+            case 'pocanubosidad':
+                $dayIcon = 'wi-day-sunny-overcast';
+                $nightIcon = 'wi-night-alt-partly-cloudy';
+                break;
+            case 'tormenta':
+                $dayIcon = $nightIcon = 'wi-thunderstorm';
+                break;
+            case 'viento':
+                $dayIcon = 'wi-day-windy';
+                $nightIcon = 'wi-windy';
+                break;
+        }
+
+        die();
 
         return $this->formatForecast($forecastArray);
     }
 
     /**
+     * @deprecated Web service outdated
      * Format forecast to be used on GUI
      * @param $rawData
      * @return array
