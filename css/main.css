@@ -9,6 +9,8 @@
 
 body {
     font-family: "Open Sans Light", Helvetica, Arial, sans-serif;
+    background-image: url('../assets/background.jpg');
+    background-size: cover;
 }
 
 #canvasClock {

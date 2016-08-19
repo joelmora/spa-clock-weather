@@ -19,8 +19,6 @@ app.directive('clock', function() {
                 var hour = min * 60;
                 var now = moment.duration(moment().format('H:m:s'));
 
-                var background = new createjs.Bitmap('assets/background.jpg');
-
                 var clock = new createjs.Bitmap('assets/clock.png');
                 clock.x = offsetX;
                 clock.y = offsetY;
@@ -48,7 +46,6 @@ app.directive('clock', function() {
                 secondHand.y = 255 + offsetY;
                 secondHand.rotation = timeToDegree(now.seconds());
 
-                stage.addChild(background);
                 stage.addChild(clock);
                 stage.addChild(hourHand);
                 stage.addChild(minuteHand);
