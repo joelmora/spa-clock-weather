@@ -5,6 +5,7 @@ var translationsES = {
     NOW: 'Ahora',
     MAX: 'Max',
     WEATHER: {
+        BEAUFORT_X: 'N/A',
         BEAUFORT_0: 'Calma',
         BEAUFORT_1: 'Aire Suave',
         BEAUFORT_2: 'Brisa Debil',

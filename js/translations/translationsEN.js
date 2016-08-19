@@ -2,6 +2,7 @@ var translationsEN = {
     BUTTON_LANG_EN: 'English',
     BUTTON_LANG_ES: 'Spanish',
     WEATHER: {
+        BEAUFORT_X: 'N/A',
         BEAUFORT_0: 'Calm',
         BEAUFORT_1: 'Light Air',
         BEAUFORT_2: 'Light Breeze',

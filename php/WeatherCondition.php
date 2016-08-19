@@ -173,32 +173,32 @@ class WeatherCondition
     private function windToBeaufort($wind = null)
     {
         if ($wind === null) {
-            return array('force' => -1, 'description' => 'N/A');
+            return array('force' => 'X', 'description' => 'N/A');
         } elseif ($wind < 1) {
             return array('force' => 0, 'description' => 'Calm');
-        } elseif ($wind > 1 AND $wind < 5) {
+        } elseif ($wind >= 1 AND $wind < 6) {
             return array('force' => 1, 'description' => 'Light Air');
-        } elseif ($wind > 6 AND $wind < 11) {
+        } elseif ($wind >= 6 AND $wind < 12) {
             return array('force' => 2, 'description' => 'Light Breeze');
-        } elseif ($wind > 12 AND $wind < 19) {
+        } elseif ($wind >= 12 AND $wind < 20) {
             return array('force' => 3, 'description' => 'Gentle Breeze');
-        } elseif ($wind > 20 AND $wind < 28) {
+        } elseif ($wind >= 20 AND $wind < 29) {
             return array('force' => 4, 'description' => 'Moderate Breeze');
-        } elseif ($wind > 29 AND $wind < 38) {
+        } elseif ($wind >= 29 AND $wind < 39) {
             return array('force' => 5, 'description' => 'Fresh Breeze');
-        } elseif ($wind > 39 AND $wind < 49) {
+        } elseif ($wind >= 39 AND $wind < 50) {
             return array('force' => 6, 'description' => 'Strong Breeze');
-        } elseif ($wind > 50 AND $wind < 61) {
+        } elseif ($wind >= 50 AND $wind < 62) {
             return array('force' => 7, 'description' => 'Near Gale');
-        } elseif ($wind > 62 AND $wind < 74) {
+        } elseif ($wind >= 62 AND $wind < 75) {
             return array('force' => 8, 'description' => 'Gale');
-        } elseif ($wind > 75 AND $wind < 88) {
+        } elseif ($wind >= 75 AND $wind < 89) {
             return array('force' => 9, 'description' => 'Strong Gale');
-        } elseif ($wind > 89 AND $wind < 102) {
+        } elseif ($wind >= 89 AND $wind < 103) {
             return array('force' => 10, 'description' => 'Storm');
-        } elseif ($wind > 103 AND $wind < 107) {
+        } elseif ($wind >= 103 AND $wind < 108) {
             return array('force' => 11, 'description' => 'Violent Storm');
-        } elseif ($wind > 108) {
+        } elseif ($wind >= 108) {
             return array('force' => 12, 'description' => 'Hurricane');
         }
     }
