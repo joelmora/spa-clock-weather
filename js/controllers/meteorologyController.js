@@ -3,29 +3,7 @@ app.controller('meteorologyController', ['$scope', 'weatherService', 'forecastSe
     var weatherTimestamp, forecastTimestamp;
     var weatherChecker, forecastChecker;
     var updateWeatherEveryMinutes = 5;
-    var updateForecastEveryHours = 24;
-
-    //weather
-    this.loadCurrentWeather = function()
-    {
-        weatherService.getCurrentWeather().success(function(data) {
-            $scope.weather = data;
-            weatherTimestamp = moment(data.timestamp);
-        });
-    };
-
-    //forecast
-    this.loadCurrentForecast = function()
-    {
-        forecastService.getCurrentForecast().success(function(data) {
-            $scope.forecast = data;
-            forecastTimestamp = moment(data.expireOn);
-        });
-    };
-
-    //call the service for the first time
-    this.loadCurrentWeather();
-    this.loadCurrentForecast();
+    var updateForecastEveryHours = 3;
 
     //clicks
     $scope.updateMeteorology = function()
@@ -37,6 +15,17 @@ app.controller('meteorologyController', ['$scope', 'weatherService', 'forecastSe
     $scope.getHour = function()
     {
         return moment().format('HH:mm');
+    };
+
+    $scope.getCurrentTemperature = function()
+    {
+        if ($scope.weather) {
+            if ($scope.weather.windChill) {
+                return $scope.weather.windChill.now;
+            } else {
+                return $scope.weather.temperature.now;
+            }
+        }
     };
 
     //call the weather service every 'updateWeatherEveryMinutes' time
@@ -58,7 +47,7 @@ app.controller('meteorologyController', ['$scope', 'weatherService', 'forecastSe
         var diffForecast = now.diff(forecastTimestamp);
         var hoursFromLastForecast = moment.duration(diffForecast).as('hours');
 
-        if (hoursFromLastForecast > 24) {
+        if (hoursFromLastForecast > 3) {
             this.loadCurrentForecast();
         }
     }.bind(this), (updateForecastEveryHours * 60 * 60 * 1000));
@@ -71,4 +60,26 @@ app.controller('meteorologyController', ['$scope', 'weatherService', 'forecastSe
             forecastChecker = undefined;
         }
     });
+
+    //weather
+    this.loadCurrentWeather = function()
+    {
+        weatherService.getCurrentWeather().success(function(data) {
+            $scope.weather = data;
+            weatherTimestamp = moment(data.timestamp);
+        });
+    };
+
+    //forecast
+    this.loadCurrentForecast = function()
+    {
+        forecastService.getCurrentForecast().success(function(data) {
+            $scope.forecast = data;
+            forecastTimestamp = moment(data.timestamp);
+        });
+    };
+
+    //call the service for the first time
+    this.loadCurrentWeather();
+    this.loadCurrentForecast();
 }]);

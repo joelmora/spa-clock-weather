@@ -32,7 +32,7 @@
                     <hr style="margin-top: 2px">
                     <div id="temperature" class="row">
                         <div class="col-xs-12">
-                            <div class="value">{{ weather.windChill.now | weatherFilter }}</div>
+                            <div class="value">{{ getCurrentTemperature() | weatherFilter }}</div>
                         </div>
                     </div>
 
@@ -40,7 +40,7 @@
 
                     <div id="temperatureRange" class="row">
                         <div class="col-xs-2">
-                            <i class="wi wi-thermometer"></i>
+                            <i class="wi wi-thermometer left-icon"></i>
                         </div>
                         <div class="col-xs-3">
                             <span>{{'MIN' | translate}}:</span>
@@ -57,10 +57,10 @@
                     </div>
                     <div id="wind" class="row">
                         <div class="col-xs-2">
-                            <i class="wi wi-wind-beaufort-{{weather.windSpeed.now.beaufort.force}}"></i>
+                            <i class="wi wi-wind-beaufort-{{weather.windSpeed.now.beaufort.force}} left-icon"></i>
                         </div>
                         <div class="col-xs-10">
-                            <div class="description">{{ 'WEATHER.BEAUFORT_' + weather.windSpeed.now.beaufort.force | translate }}</div>
+                            <div class="description regular-font">{{ 'WEATHER.BEAUFORT_' + weather.windSpeed.now.beaufort.force | translate }}</div>
                             <div class="value">{{ weather.windSpeed.now | weatherFilter }}</div>
                         </div>
                     </div>
@@ -74,30 +74,33 @@
                     </div>
                     <div id="sunset" class="row" ng-hide="weather.sunsetAt < getHour()">
                         <div class="col-xs-2">
-                            <i class="wi wi-horizon"></i>
+                            <i class="wi wi-horizon left-icon"></i>
                         </div>
                         <div class="col-xs-10">
                             {{hour}}
                             {{'WEATHER.SUNSET_AT' | translate}}:
-                            <span class="sunset-time">{{weather.sunsetAt}}</span>
+                            <span class="sunset-time regular-font">{{weather.sunsetAt}}</span>
                         </div>
                     </div>
                     <div id="sunrise" class="row" ng-show="weather.sunsetAt < getHour()">
                         <div class="col-xs-2">
-                            <i class="wi wi-sunrise"></i>
+                            <i class="wi wi-sunrise left-icon"></i>
                         </div>
                         <div class="col-xs-10">
                             {{'WEATHER.SUNRISE_AT' | translate}}:
-                            <span class="sunrise-time">{{weather.sunriseAt}}</span>
+                            <span class="sunrise-time regular-font">{{weather.sunriseAt}}</span>
                         </div>
                     </div>
                     <div id="forecast" class="row">
                         <hr>
-                        <div class="col-xs-3">
-                            <i class="wi wi-cloudy-windy"></i>
+                        <div class="col-xs-3" ng-hide="weather.sunsetAt < getHour()">
+                            <i class="wi {{forecast.dayicon}}"></i>
+                        </div>
+                        <div class="col-xs-3" ng-show="weather.sunsetAt < getHour()">
+                            <i class="wi {{forecast.nighticon}}"></i>
                         </div>
                         <div class="col-xs-9">
-                            <div class="value">Parcial nublado con incremento ocasional de la nubosidad. Viento moderado.</div>
+                            <div class="value">{{forecast.description}}</div>
                         </div>
                     </div>
                 </div>

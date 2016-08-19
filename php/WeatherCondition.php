@@ -28,13 +28,8 @@ class WeatherCondition
     public function getConditions()
     {
         $curl = new CurlManager();
-//        $forecastRaw = $curl->getData($this->getWeatherUrl());
-        
-        //FIXME TEST
-        $json = '{"fu":"Inamhi","iE":[{"fe":"2016-08-03 10:00:00","da":"40.0","si":"%","pa":"HUMEDAD RELATIVA DEL AIRE","de":"MINIMA","ti":"VAISALA CLIMATOLOGICA PRINCIPAL"},{"fe":"2016-08-03 10:00:00","da":"47.0","si":"%","pa":"HUMEDAD RELATIVA DEL AIRE","de":"MAXIMA","ti":"VAISALA CLIMATOLOGICA PRINCIPAL"},{"fe":"2016-08-03 10:00:00","da":"41.0","si":"%","pa":"HUMEDAD RELATIVA DEL AIRE","de":"INSTANTANEA","ti":"VAISALA CLIMATOLOGICA PRINCIPAL"},{"fe":"2016-08-03 10:00:00","da":"0.0","si":"mm","pa":"PRECIPITACION","de":"SUMA","ti":"VAISALA CLIMATOLOGICA PRINCIPAL"},{"fe":"2016-08-03 10:00:00","da":"731.5","si":"hPa","pa":"PRESION ATMOSFERICA","de":"INSTANTANEA","ti":"VAISALA CLIMATOLOGICA PRINCIPAL"},{"fe":"2016-08-03 10:00:00","da":"19.5","si":"ºC","pa":"TEMPERATURA AIRE","de":"MAXIMA","ti":"VAISALA CLIMATOLOGICA PRINCIPAL"},{"fe":"2016-08-03 10:00:00","da":"19.3","si":"ºC","pa":"TEMPERATURA AIRE","de":"INSTANTANEA","ti":"VAISALA CLIMATOLOGICA PRINCIPAL"},{"fe":"2016-08-03 10:00:00","da":"16.7","si":"ºC","pa":"TEMPERATURA AIRE","de":"MINIMA","ti":"VAISALA CLIMATOLOGICA PRINCIPAL"},{"fe":"2016-08-03 10:00:00","da":"183.0","si":"º","pa":"VIENTO DIRECCION","de":"INSTANTANEA","ti":"VAISALA CLIMATOLOGICA PRINCIPAL"},{"fe":"2016-08-03 10:00:00","da":"1.9","si":"m/s","pa":"VIENTO VELOCIDAD","de":"INSTANTANEA","ti":"VAISALA CLIMATOLOGICA PRINCIPAL"}]}';
-        $forecastRaw = json_decode($json);
-        //FIXME END TEST
-        
+        $forecastRaw = $curl->getData($this->getWeatherUrl());
+
         //sunrise & sunset
         $today = new \DateTime();
         $tomorrow = new \DateTime('tomorrow');
@@ -113,7 +108,7 @@ class WeatherCondition
         }
 
         //calculate thermic sensation
-        if ($weatherData['windSpeed']['now'] AND $weatherData['temperature']['now']) {
+        if (isset($weatherData['windSpeed']) AND isset($weatherData['temperature']['now'])) {
 
             $t = $weatherData['temperature']['now']['value'];
             $w = $weatherData['windSpeed']['now']['value'];
@@ -122,6 +117,19 @@ class WeatherCondition
 
             $weatherData['windChill']['now']['value'] = $windChill;
             $weatherData['windChill']['now']['unit'] = $weatherData['temperature']['now']['unit'];
+        }
+
+        //if temperature now doesn't exist
+        if (!isset($weatherData['temperature']['now']) AND isset($weatherData['temperature']['min']) AND $weatherData['temperature']['max']) {
+            $weatherData['temperature']['now']['value'] = ($weatherData['temperature']['min']['value'] + $weatherData['temperature']['max']['value']) / 2;
+            $weatherData['temperature']['now']['unit'] = $weatherData['temperature']['min']['unit'];
+        }
+
+        //if no wind speed
+        if (!isset($weatherData['windSpeed'])) {
+            $weatherData['windSpeed']['now']['value'] = 'N/A';
+            $weatherData['windSpeed']['now']['unit'] = '';
+            $weatherData['windSpeed']['now']['beaufort'] = $this->windToBeaufort();
         }
 
         //sunset
@@ -162,9 +170,11 @@ class WeatherCondition
      * @return array
      * @author Joel Mora
      */
-    private function windToBeaufort($wind)
+    private function windToBeaufort($wind = null)
     {
-        if ($wind < 1) {
+        if ($wind === null) {
+            return array('force' => -1, 'description' => 'N/A');
+        } elseif ($wind < 1) {
             return array('force' => 0, 'description' => 'Calm');
         } elseif ($wind > 1 AND $wind < 5) {
             return array('force' => 1, 'description' => 'Light Air');
@@ -188,7 +198,7 @@ class WeatherCondition
             return array('force' => 10, 'description' => 'Storm');
         } elseif ($wind > 103 AND $wind < 107) {
             return array('force' => 11, 'description' => 'Violent Storm');
-        } else {
+        } elseif ($wind > 108) {
             return array('force' => 12, 'description' => 'Hurricane');
         }
     }
@@ -214,10 +224,7 @@ class WeatherCondition
      */
     private function calculateWindChill($temperature, $wind)
     {
-        // m/s to km/h
-        $windKMH = $this->msTokh($wind);
-
-        $sensation = 13.12 + 0.6215 * $temperature - 11.37 * pow($windKMH, 0.16) + 0.3965 * $temperature * pow($windKMH, 0.16);
+        $sensation = 13.12 + 0.6215 * $temperature - 11.37 * pow($wind, 0.16) + 0.3965 * $temperature * pow($wind, 0.16);
 
         return $sensation;
     }

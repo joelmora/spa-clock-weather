@@ -34,12 +34,7 @@ body {
     line-height: 45px;
     text-align: center;
 }
-/*Icon Sizes*/
-#temperatureRange .wi-thermometer,
-#humidityRange .wi-humidity,
-#wind i[class*=wi-wind-beaufort],
-#sunset .wi-horizon,
-#sunrise .wi-sunrise {
+.left-icon {
     font-size: 170%;
     margin-top: 10px;
 }
@@ -57,7 +52,7 @@ body {
     line-height: 13px;
 }
 #forecast .wi {
-    font-size: 350%;
+    font-size: 300%;
     margin-top: 10px;
     line-height: 13px;
 }
@@ -71,11 +66,7 @@ body {
     font-size: 80%;
     font-family: "Open Sans Light", Helvetica, Arial, sans-serif;
 }
-#temperatureRange span.value,
-#humidityRange span.value,
-#wind div.description,
-#sunset .sunset-time,
-#sunrise .sunrise-time {
+.regular-font {
     font-family: "Open Sans Regular", Helvetica, Arial, sans-serif;
 }
 

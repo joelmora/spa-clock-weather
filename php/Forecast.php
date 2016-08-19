@@ -35,9 +35,6 @@ class Forecast
 
     public function getForecast()
     {
-//        $curl = new CurlManager();
-//        $forecastRaw = $curl->getData($this->getUrl());
-
         $html = file_get_html($this->getUrl());
 
         $forecastInterAndina = $html->find('table', 2);
@@ -49,51 +46,85 @@ class Forecast
             }
         }
 
-        var_dump($forecastText, $forecastIcon);
+        //get condition
+        $condition = array();
+        preg_match_all('/iconografia\/(\w+)\.\w+$/', $forecastIcon, $condition);
 
-        $name = array();
-        preg_match_all('/iconografia\/(\w+)\.\w+$/', $forecastIcon, $name);
+        //get icons by condition
+        $icons = $this->getIcons($condition[1][0]);
 
-        switch($name[1][0]) {
+        return array(
+            'timestamp' => date('Y-m-d H:i:s'),
+            'description' => $forecastText,
+            'dayicon' => $icons['day'],
+            'nighticon' => $icons['night'],
+        );
+    }
+
+    /**
+     * Get icons according to condition
+     * @param $condition
+     * @return array
+     * @author Joel Mora
+     */
+    private function getIcons($condition)
+    {
+        switch($condition) {
             case 'bruma':
                 $dayIcon = 'wi-day-fog';
                 $nightIcon = 'wi-night-fog';
                 break;
             case 'calima':
                 $dayIcon = 'wi-day-haze';
-                $nightIcon = ''; //TODO
+                $nightIcon = 'wi-dust';
                 break;
             case 'casinubladolluvia':
+                $dayIcon = 'wi-rain-mix';
+                $nightIcon = 'wi-rain-mix';
                 break;
             case 'cenizavolcanica':
+                $dayIcon = 'wi-volcano';
+                $nightIcon = 'wi-volcano';
                 break;
             case 'chubascosaislados':
+                $dayIcon = 'wi-day-snow-wind';
+                $nightIcon = 'wi-night-alt-snow';
                 break;
             case 'chubascosdispersos':
+                $dayIcon = 'wi-rain-mix';
+                $nightIcon = 'wi-rain-mix';
                 break;
             case 'despeado':
                 $dayIcon = 'wi-day-sunny';
                 $nightIcon = 'wi-night-clear';
                 break;
             case 'humo':
+                $dayIcon = 'wi-smoke';
+                $nightIcon = 'wi-smoke';
                 break;
             case 'llovizna':
+                $dayIcon = 'wi-sleet';
+                $nightIcon = 'wi-sleet';
                 break;
             case 'lluvia':
+                $dayIcon = 'wi-rain';
+                $nightIcon = 'wi-rain';
                 break;
             case 'lluviasaisladas':
                 $dayIcon = 'wi-day-showers';
-                $nightIcon = 'wi-night-showers';
+                $nightIcon = 'wi-night-alt-showers';
                 break;
             case 'niebla':
+                $dayIcon = 'wi-day-fog';
+                $nightIcon = 'wi-night-fog';
                 break;
             case 'nublado':
                 $dayIcon = 'wi-cloudy';
                 $nightIcon = 'wi-cloudy';
                 break;
             case 'nubladoconclaros':
-                $dayIcon = 'wi-night-partly-cloudy';
-                $nightIcon = 'wi-night-partly-cloudy';
+                $dayIcon = 'wi-day-sunny-overcast';
+                $nightIcon = 'wi-night-alt-partly-cloudy';
                 break;
             case 'ocasionalparcialnublado':
                 $dayIcon = 'wi-day-cloudy';
@@ -108,17 +139,19 @@ class Forecast
                 $nightIcon = 'wi-night-alt-partly-cloudy';
                 break;
             case 'tormenta':
-                $dayIcon = $nightIcon = 'wi-thunderstorm';
+                $dayIcon = 'wi-thunderstorm';
+                $nightIcon = 'wi-thunderstorm';
                 break;
             case 'viento':
                 $dayIcon = 'wi-day-windy';
-                $nightIcon = 'wi-windy';
+                $nightIcon = 'wi-strong-wind';
                 break;
         }
 
-        die();
-
-        return $this->formatForecast($forecastArray);
+        return array(
+            'day' => $dayIcon,
+            'night' => $nightIcon,
+        );
     }
 
     /**
