@@ -1,6 +1,5 @@
 var translationsES = {
-    BUTTON_LANG_EN: 'Ingles',
-    BUTTON_LANG_ES: 'Español',
+    TITLE: 'Reloj/Clima Widget',
     MIN: 'Min',
     NOW: 'Ahora',
     MAX: 'Max',
