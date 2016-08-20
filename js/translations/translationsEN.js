@@ -1,6 +1,9 @@
 var translationsEN = {
     BUTTON_LANG_EN: 'English',
     BUTTON_LANG_ES: 'Spanish',
+    MIN: 'Min',
+    NOW: 'Now',
+    MAX: 'Max',
     WEATHER: {
         BEAUFORT_X: 'N/A',
         BEAUFORT_0: 'Calm',
@@ -18,5 +21,26 @@ var translationsEN = {
         BEAUFORT_12: 'Hurricane',
         SUNSET_AT: 'Sunset At',
         SUNRISE_AT: 'Sunrise At'
+    },
+    CALENDAR: {
+        Jan: 'Jan',
+        Feb: 'Feb',
+        Mar: 'Mar',
+        Apr: 'Apr',
+        May: 'May',
+        Jun: 'Jun',
+        Jul: 'Jul',
+        Aug: 'Aug',
+        Sep: 'Sep',
+        Oct: 'Oct',
+        Nov: 'Nov',
+        Dec: 'Dec',
+        Monday: 'Monday',
+        Tuesday: 'Tuesday',
+        Wednesday: 'Wednesday',
+        Thursday: 'Thursday',
+        Friday: 'Friday',
+        Saturday: 'Saturday',
+        Sunday: 'Sunday'
     }
 };
