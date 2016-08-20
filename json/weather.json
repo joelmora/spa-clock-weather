@@ -1,0 +1,30 @@
+{
+  "timestamp":"2016-08-20 14:00:00",
+  "humidity":{
+    "max":{"value":"37.0","unit":"%"},
+    "min":{"value":"31.0","unit":"%"},
+    "now":{"value":"34.0","unit":"%"}
+  },
+  "rain":{
+    "sum":{"value":"0.0","unit":"mm"}
+  },
+  "pressure":{
+    "now":{"value":"729.2","unit":"hPa"}
+  },
+  "temperature":{
+    "min":{"value":"18.4","unit":"\u00b0C"},
+    "now":{"value":"19.2","unit":"\u00b0C"},
+    "max":{"value":"20.6","unit":"\u00b0C"}
+  },
+  "windDirection":{
+    "now":{"value":"68.0","unit":"\u00b0","round":68}
+  },
+  "windSpeed":{
+    "now":{"value":12.96,"unit":"k\/h","beaufort":{"force":3,"description":"Gentle Breeze"}}
+  },
+  "windChill":{
+    "now":{"value":19.829742572808,"unit":"\u00b0C"}
+  },
+  "sunsetAt":"18:08",
+  "sunriseAt":"06:08"
+}
