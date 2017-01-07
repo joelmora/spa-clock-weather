@@ -1,9 +1,13 @@
 var translationsEN = {
     TITLE: 'Clock/Weather Widget',
+    LANGUAGE: 'Idioma',
+    FORECAST_ERROR: 'Unable to retrieve forecast',
+    WEATHER_ERROR: 'Unable to retrieve weather',
     MIN: 'Min',
     NOW: 'Now',
     MAX: 'Max',
     WEATHER: {
+        BEAUFORT_: '',
         BEAUFORT_X: 'N/A',
         BEAUFORT_0: 'Calm',
         BEAUFORT_1: 'Light Air',
