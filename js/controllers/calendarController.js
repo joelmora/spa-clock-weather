@@ -1,20 +1,28 @@
-app.controller('calendarController', ['$scope', '$interval', function($scope, $interval) {
+angular.module('dashboardApp').controller('calendarController',
+    ['$scope', '$interval', function($scope, $interval) {
 
-    var calendarInterval;
+        var calendarInterval;
+        var updateCalendar;
 
-    this.updateCalendar = function()
-    {
-        $scope.day = moment().format('DD');
-        $scope.month = moment().format('MMM');
-        $scope.weekday = moment().format('dddd');
-        
-        $scope.hour = moment().format('H:mm');
-    };
+        /**
+         * Get current time and assign the data to scope
+         */
+        updateCalendar = function()
+        {
+            $scope.day = moment().format('DD');
+            $scope.month = moment().format('MMM');
+            $scope.weekday = moment().format('dddd');
 
-    calendarInterval = $interval(function()
-    {
-        this.updateCalendar();
-    }.bind(this), 1000);
+            $scope.hour = moment().format('H:mm');
+        };
 
-    this.updateCalendar();
-}]);
+        /**
+         * Update calendar every second
+         */
+        calendarInterval = $interval(function()
+        {
+            updateCalendar();
+        }, 1000);
+
+        updateCalendar();
+    }]);

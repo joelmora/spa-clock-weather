@@ -20,10 +20,11 @@ body {
     margin-top: 10px;
     height: 600px;
 }
-#meteorologyController > .col-xs-12 > .row {
+#meteorologyController > #weather-div > .col-xs-12 > .row {
     margin-bottom: 20px;
+    margin-top: 20px;
 }
-#meteorologyController > .col-xs-12 > .row:last-child {
+#meteorologyController > #weather-div > .col-xs-12 > .row:last-child {
     margin-bottom: 0;
 }
 #city {
@@ -40,10 +41,7 @@ body {
     font-size: 170%;
     margin-top: 10px;
 }
-#sunset,
-#sunrise {
-    margin-bottom: 0 !important;
-}
+
 #sunset .wi-horizon,
 #sunrise .wi-sunrise {
     line-height: 0;
@@ -53,12 +51,16 @@ body {
     margin-top: 10px;
     line-height: 13px;
 }
-#forecast .wi {
+#forecast-div {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+#forecast-div .wi {
     font-size: 300%;
     margin-top: 10px;
     line-height: 13px;
 }
-#forecast .value {
+#forecast-div .value {
     text-align: right;
     font-size: 90%
 }
@@ -74,11 +76,13 @@ body {
 
 hr {
     border-color: #bbb;
+    margin: 0;
 }
 
 /*Calendar*/
 #calendarController {
     text-align: center;
+    margin-top: 20px;
 }
 #calendarController .date {
     font-size: 150%;
@@ -87,4 +91,22 @@ hr {
     font-size: 400%;
     line-height: 50px;
     margin-bottom: 10px;
+}
+
+.error-status {
+    font-size: 90%;
+    font-style: italic;
+}
+
+#button-settings {
+    background: none;
+    border: 1px solid #999;
+}
+
+/*waitme fix*/
+.waitMe_content {
+    margin-top: 0 !important;
+    top: 50% !important;
+    position: relative !important;
+    transform: translateY(-50%) !important;
 }

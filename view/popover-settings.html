@@ -1,0 +1,16 @@
+<div class="triangle"></div>
+<div style="margin: 10px">
+    <div class="form-group">
+        <label>{{ 'LANGUAGE' | translate }}</label>
+        <div class="input-group">
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-default btn-xs" ng-class="{'active': isLang('es')}" ng-click="changeLanguage('es')">
+                    <input type="radio" autocomplete="off" checked> Español
+                </label>
+                <label class="btn btn-default btn-xs" ng-class="{'active': isLang('en')}" ng-click="changeLanguage('en')">
+                    <input type="radio" autocomplete="off"> English
+                </label>
+            </div>
+        </div>
+    </div>
+</div>

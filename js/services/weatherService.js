@@ -1,7 +1,14 @@
-app.factory('weatherService', ['$http', function($http) {
-    return {
-        getCurrentWeather: function() {
-            return $http.get('http://localhost/spa-clock-weather/php/weatherService.php')
+angular.module('dashboardApp').factory('weatherService',
+    ['$http', 'WEATHER_URL', function($http, WEATHER_URL) {
+
+        /**
+         * Call the backend to retrieve the weather data
+         * @returns {*}
+         */
+        function getCurrentWeather()
+        {
+
+            return $http.get(WEATHER_URL)
                 .success(function(result) {
                     return result;
                 })
@@ -9,5 +16,8 @@ app.factory('weatherService', ['$http', function($http) {
                     return err;
                 });
         }
-    };
-}]);
+        
+        return {
+            'getCurrentWeather': getCurrentWeather
+        };
+    }]);

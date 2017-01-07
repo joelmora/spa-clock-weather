@@ -1,9 +1,13 @@
 var translationsES = {
     TITLE: 'Reloj/Clima Widget',
+    LANGUAGE: 'Idioma',
+    FORECAST_ERROR: 'No es posible mostrar prevision del tiempo',
+    WEATHER_ERROR: 'No es posible mostrar el clima',
     MIN: 'Min',
     NOW: 'Ahora',
     MAX: 'Max',
     WEATHER: {
+        BEAUFORT_: '',
         BEAUFORT_X: 'N/A',
         BEAUFORT_0: 'Calma',
         BEAUFORT_1: 'Aire Suave',

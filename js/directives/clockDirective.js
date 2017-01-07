@@ -1,4 +1,4 @@
-app.directive('clock', function() {
+angular.module('dashboardApp').directive('clock', function() {
     return {
         restrict: 'EAC',
         scope: {
@@ -10,6 +10,9 @@ app.directive('clock', function() {
         link: function() {
             init();
 
+            /**
+             * Creates objects for every clock hand and add to the canvas
+             */
             function init() {
                 var stage = new createjs.Stage("canvasClock");
                 var offsetX = 20;
@@ -66,13 +69,24 @@ app.directive('clock', function() {
                 createjs.Ticker.addEventListener("tick", stage);
             }
 
+            /**
+             * Change a minute/hour value into an angle
+             * @param time
+             * @param isHour
+             * @returns {*}
+             */
             function timeToDegree(time, isHour)
             {
-                var factor = (typeof isHour != 'undefined' && isHour == true) ? 30 : 6;
+                var factor = (angular.isDefined(isHour) && isHour == true) ? 30 : 6;
                 var value = (time * factor) -90;
                 return oneTo360(value);
             }
 
+            /**
+             * Change a value into an angle
+             * @param degree
+             * @returns {*}
+             */
             function oneTo360(degree)
             {
                 if (degree < 0) {

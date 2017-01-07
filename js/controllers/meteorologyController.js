@@ -1,85 +1,159 @@
-app.controller('meteorologyController', ['$scope', 'weatherService', 'forecastService', '$interval', function($scope, weatherService, forecastService, $interval)
-{
-    var weatherTimestamp, forecastTimestamp;
-    var weatherChecker, forecastChecker;
-    var updateWeatherEveryMinutes = 5;
-    var updateForecastEveryHours = 3;
+angular.module('dashboardApp').controller('meteorologyController',
+    ['$scope', 'weatherService', 'forecastService', 'spinnerService', '$translate', '$interval', function($scope, weatherService, forecastService, spinner, $translate, $interval) {
+        var weatherTimestamp, forecastTimestamp;
+        var weatherChecker, forecastChecker;
+        var updateWeatherEveryMinutes = 5;
+        var updateForecastEveryHours = 3;
 
-    //clicks
-    $scope.updateMeteorology = function()
-    {
-        this.loadCurrentWeather();
-        this.loadCurrentForecast();
-    }.bind(this);
-    
-    $scope.getHour = function()
-    {
-        return moment().format('HH:mm');
-    };
+        /**
+         * Return the current time
+         * @returns {*}
+         */
+        $scope.getHour = function()
+        {
+            return moment().format('HH:mm');
+        };
 
-    $scope.getCurrentTemperature = function()
-    {
-        if ($scope.weather) {
-            if ($scope.weather.windChill) {
-                return $scope.weather.windChill.now;
-            } else {
-                return $scope.weather.temperature.now;
+        /**
+         * Get the temperature/windChill
+         * @param type
+         * @returns {*}
+         */
+        $scope.getTemperature = function(type)
+        {
+            var temp;
+
+            if (!$scope.weather) {
+                return 'N/A';
             }
-        }
-    };
 
-    //call the weather service every 'updateWeatherEveryMinutes' time
-    weatherChecker = $interval(function()
-    {
-        var now = moment();
-        var diffWeather = now.diff(weatherTimestamp);
-        var minutesFromLastWeather = moment.duration(diffWeather).as('minutes');
+            switch(type) {
+                case 'current':
+                    if ($scope.weather.windChill) {
+                        temp = $scope.weather.windChill.now;
+                    } else {
+                        temp = $scope.weather.temperature.now;
+                    }
+                    break;
+                case 'min':
+                    temp = $scope.weather.temperature.min;
+                    break;
+                case 'now':
+                    temp = $scope.weather.temperature.now;
+                    break;
+                case 'max':
+                    temp = $scope.weather.temperature.max;
+                    break;
+            }
 
-        if (minutesFromLastWeather > 60) {
-            this.loadCurrentWeather();
-        }
-    }.bind(this), (updateWeatherEveryMinutes * 60 * 1000));
+            return temp;
+        };
 
-    //call the forecast service every 'updateForecastEveryHours' time
-    forecastChecker = $interval(function()
-    {
-        var now = moment();
-        var diffForecast = now.diff(forecastTimestamp);
-        var hoursFromLastForecast = moment.duration(diffForecast).as('hours');
+        /**
+         * Get the value of beaufort force
+         * @returns {*}
+         */
+        $scope.getBeaufortForce = function()
+        {
+            if (!$scope.weather) {
+                return '0';
+            }
 
-        if (hoursFromLastForecast > 3) {
-            this.loadCurrentForecast();
-        }
-    }.bind(this), (updateForecastEveryHours * 60 * 60 * 1000));
+            return $scope.weather.windSpeed.now.beaufort.force
+        };
 
-    $scope.$on('$destroy', function() {
-        if (angular.isDefined(weatherChecker) && angular.isDefined(forecastChecker)) {
-            $interval.cancel(weatherChecker);
-            $interval.cancel(forecastChecker);
-            weatherChecker = undefined;
-            forecastChecker = undefined;
-        }
-    });
+        /**
+         * Call the weather service every 'updateWeatherEveryMinutes' time
+         */
+        weatherChecker = $interval(function()
+        {
+            var now = moment();
+            var diffWeather = now.diff(weatherTimestamp);
+            var minutesFromLastWeather = moment.duration(diffWeather).as('minutes');
 
-    //weather
-    this.loadCurrentWeather = function()
-    {
-        weatherService.getCurrentWeather().success(function(data) {
-            $scope.weather = data;
-            weatherTimestamp = moment(data.timestamp);
+            if (minutesFromLastWeather > 60) {
+                loadCurrentWeather();
+            }
+        }, (updateWeatherEveryMinutes * 60 * 1000));
+
+        /**
+         * Call the forecast service every 'updateForecastEveryHours' time
+         */
+        forecastChecker = $interval(function()
+        {
+            var now = moment();
+            var diffForecast = now.diff(forecastTimestamp);
+            var hoursFromLastForecast = moment.duration(diffForecast).as('hours');
+
+            if (hoursFromLastForecast > 3) {
+                loadCurrentForecast();
+            }
+        }, (updateForecastEveryHours * 60 * 60 * 1000));
+
+        $scope.$on('$destroy', function() {
+            if (angular.isDefined(weatherChecker) && angular.isDefined(forecastChecker)) {
+                $interval.cancel(weatherChecker);
+                $interval.cancel(forecastChecker);
+                weatherChecker = undefined;
+                forecastChecker = undefined;
+            }
         });
-    };
 
-    //forecast
-    this.loadCurrentForecast = function()
-    {
-        forecastService.getCurrentForecast().success(function(data) {
-            $scope.forecast = data;
-            forecastTimestamp = moment(data.timestamp);
-        });
-    };
+        /**
+         * Load current weather
+         */
+        var loadCurrentWeather = function()
+        {
+            spinner.show({id: 'weather-div'});
 
-    //call the service for the first time
-    this.loadCurrentWeather();
-    this.loadCurrentForecast();
-}]);
+            weatherService.getCurrentWeather()
+                .success(function(data) {
+                    $scope.weather = data;
+                    weatherTimestamp = moment(data.timestamp);
+                })
+                .error(function() {
+                    $translate('WEATHER_ERROR').then(
+                        function(msg) {
+                            $scope.weatherError = msg;
+                        }, function(msg) {
+                            $scope.weatherError = msg;
+                        }
+                    );
+                })
+                .finally(function () {
+                    spinner.hide('weather-div');
+                })
+            ;
+        };
+
+        /**
+         * Load current forecast
+         */
+        var loadCurrentForecast = function()
+        {
+            spinner.show({id: 'forecast-div'});
+
+            forecastService.getCurrentForecast()
+                .success(function(data) {
+                    $scope.forecast = data;
+                    forecastTimestamp = moment(data.timestamp);
+                })
+                .error(function() {
+                    $translate('FORECAST_ERROR').then(
+                        function(msg) {
+                            $scope.forecastError = msg;
+                        }, function(msg) {
+                            $scope.forecastError = msg;
+                        }
+                    );
+                })
+                .finally(function () {
+                    spinner.hide('forecast-div');
+                })
+            ;
+        };
+
+        //call the service for the first time
+        loadCurrentWeather();
+        loadCurrentForecast();
+    }]);
